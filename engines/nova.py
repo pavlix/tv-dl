@@ -51,8 +51,7 @@ class NovaEngine:
         items = [(e.find('quality').text, e) for e in self.playlist.findall('mediaList/media')]
         log.debug('Varianty: {}'.format(', '.join(q for q, e in items)))
         if len(items) == 0:
-            log.error('Není k dispozici žádná varianta videa.')
-            exit(1)
+            raise ValueError('Není k dispozici žádná varianta videa.')
         if quality:
             try:
                 e = dict(items)[quality]
