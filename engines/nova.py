@@ -53,19 +53,20 @@ class NovaEngine:
         if len(items) == 0:
             log.error('Není k dispozici žádná varianta videa.')
             exit(1)
-        try:
-            e = dict(items)[quality]
-            log.info('Vybraná varianta: {}'.format(quality))
-            return e
-        except KeyError:
-            q, e = items[0]
-            log.warning('Není k dispozici požadovaná varianta videa. Použije se {}.'.format(q))
+        if quality:
+            try:
+                e = dict(items)[quality]
+                log.info('Uživatelem vybraná varianta: {}'.format(quality))
+                return e
+            except:
+                log.error('Není k dispozici požadovaná varianta videa: {}'.format(quality))
+                exit(1)
+        else:
+            quality, e = items[0]
+            log.info('Automaticky vybraná varianta: {}'.format(quality))
             return e
 
     def download(self, quality, movie):
-        if not quality:
-            quality = "mp4"
-        
         baseUrl = self.playlist.find('baseUrl').text
         log.debug('Base URL: {}'.format(baseUrl))
         e = self.get_video(quality)
